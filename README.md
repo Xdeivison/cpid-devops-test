@@ -30,9 +30,19 @@ cpid-devops-test/         <-- Pasta raiz do projeto
 │   │   └── AirQuality-2025-03-28-09-40-01.sql  # <-- ARQUIVO .SQL
 │   ├── Dockerfile        # <-- Dockerfile ajustado
 │   └── ...
-└── CPID-DevOps-AirQuality-Frontend/ # Código fonte do Frontend (clonado)
-    ├── Dockerfile
-    └── ...
+├── CPID-DevOps-AirQuality-Frontend/
+│   public/                  # Arquivos públicos (favicon, imagens, etc.)
+│   src/                     # Código-fonte da aplicação (componentes, páginas, etc.)
+│   Dockerfile               # Dockerfile para build da imagem do frontend
+│   default.conf             # Configuração personalizada do NGINX
+│   docker-compose.yaml      # Orquestração do frontend via Docker
+│   eslint.config.js         # Configuração do ESLint
+│   index.html               # HTML base da aplicação
+│   jsconfig.json            # Configuração para suporte a importações no VSCode
+│   package.json             # Dependências e scripts do projeto
+│   package-lock.json        # Travamento de versões das dependências
+└── vite.config.js           # Configuração do Vite
+
 
     ## Configuração Inicial
 
