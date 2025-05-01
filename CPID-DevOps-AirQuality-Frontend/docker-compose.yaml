@@ -1,0 +1,7 @@
+services:
+  air-quality:
+    build: .
+    image: air-quality-front
+    container_name: air-quality-frontend
+    ports:
+      - 8080:80

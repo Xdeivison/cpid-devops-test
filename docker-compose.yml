@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  # --- Serviço do Banco de Dados MySQL ---
+  db:
+    image: mysql:8.0
+    container_name: mysql_db_airquality_${USER:-deivisonviana} # Nome do container atualizado
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./cpid-devops-airquality-backend/mysql-dump/AirQuality-2025-03-28-09-40-01.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u$$MYSQL_USER", "-p$$MYSQL_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # --- Serviço do Backend ---
+  backend:
+    # Build removido/comentado na versão final
+    # build:
+    #   context: ./cpid-devops-airquality-backend
+    #   dockerfile: Dockerfile
+    image: deivisonviana/airquality-backend:latest # <<< CORRIGIDO
+    container_name: backend_airquality_${USER:-deivisonviana} # Nome do container atualizado
+    environment:
+      DB_HOSTNAME: db
+      DB_USERNAME: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${MYSQL_DATABASE}
+      DB_PORT: 3306
+    ports:
+      - "18003:8003"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # --- Serviço do Frontend ---
+  frontend:
+    # Build removido/comentado na versão final
+    # build:
+    #   context: ./CPID-DevOps-AirQuality-Frontend
+    #   dockerfile: Dockerfile
+    image: deivisonviana/airquality-frontend:latest # <<< CORRIGIDO
+    container_name: frontend_airquality_${USER:-deivisonviana} # Nome do container atualizado
+    ports:
+      # VERIFIQUE a porta interna 80 no Dockerfile do frontend!
+      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+
+# --- Rede Customizada ---
+networks:
+  app-network:
+    driver: bridge
+    name: airquality-net_${USER:-deivisonviana} # Nome da rede atualizado
+
+# --- Volume Nomeado para Dados do MySQL ---
+volumes:
+  mysql_data:
+    name: airquality-db-data_${USER:-deivisonviana} # Nome do volume atualizado

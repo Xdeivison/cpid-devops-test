@@ -1,0 +1,22 @@
+# Arquivo de ambiente local com segredos
+.env
+
+# Dados persistidos do Docker
+# mysql_data/ # Volume nomeado é preferível
+
+# Dependências de projeto comuns
+CPID-DevOps-AirQuality-Backend/venv/
+CPID-DevOps-AirQuality-Backend/__pycache__/
+CPID-DevOps-AirQuality-Frontend/node_modules/
+CPID-DevOps-AirQuality-Frontend/build/
+CPID-DevOps-AirQuality-Frontend/dist/
+CPID-DevOps-AirQuality-Frontend/.env*
+CPID-DevOps-AirQuality-Frontend/coverage/
+
+# Arquivos de Sistema Operacional e IDEs
+.DS_Store
+*.swo
+*.swp
+*.idea/
+.vscode/
+*~
